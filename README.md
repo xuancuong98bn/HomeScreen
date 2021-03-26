@@ -1,2 +1,2 @@
 # HomeScreen
-Capstone project at F
+Capstone project at FuNiX
