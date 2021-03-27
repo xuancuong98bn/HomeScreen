@@ -6,17 +6,19 @@ XmlReader::XmlReader(QString filePath, ApplicationsModel &model)
     PaserXml(model);
 }
 
-bool XmlReader::ReadXmlFile(QString filePath)
+bool XmlReader::ReadXmlFile(QString fileName)
 {
     // Load xml file as raw data
-    QFile f(filePath);
+    QFile f(PROJECT_PATH + fileName);
     if (!f.open(QIODevice::ReadOnly ))
     {
+        qDebug()<< "Error?";
         // Error while loading file
         return false;
     }
     // Set data into the QDomDocument before processing
     m_xmlDoc.setContent(&f);
+    qDebug() << m_xmlDoc.toString();
     f.close();
     return true;
 }

@@ -10,7 +10,7 @@ public:
     XmlReader(QString filePath, ApplicationsModel &model);
 private:
     QDomDocument m_xmlDoc; //The QDomDocument class represents an XML document.
-    bool ReadXmlFile(QString filePath);
+    bool ReadXmlFile(QString fileName);
     void PaserXml(ApplicationsModel &model);
 };
 

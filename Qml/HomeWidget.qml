@@ -113,13 +113,13 @@ Item {
     }
 
     ListView {
-        x: 0
-        y:570 * appConfig.h_ratio
-        width: 1920 * appConfig.w_ratio
-        height: 604 * appConfig.w_ratio
+        x: 2 * appConfig.w_ratio
+        y: 570 * appConfig.h_ratio
+        width: (1920 - 4) * appConfig.w_ratio
+        height: 604 * appConfig.h_ratio
         orientation: ListView.Horizontal
         interactive: false
-        spacing: 4
+        spacing: 4 * appConfig.w_ratio
 
         displaced: Transition {
             NumberAnimation { properties: "x,y"; easing.type: Easing.OutQuad }
@@ -142,7 +142,7 @@ Item {
                     id: icon
                     property int visualIndex: 0
                     width: 316 * appConfig.w_ratio
-                    height: 604 * appConfig.w_ratio
+                    height: 604 * appConfig.h_ratio
                     anchors {
                         horizontalCenter: parent.horizontalCenter;
                         verticalCenter: parent.verticalCenter

@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
     XmlReader xmlReader("applications.xml", appsModel);
     engine.rootContext()->setContextProperty("appsModel", &appsModel);
 
-    AppConfig *appConfig = new AppConfig(app.primaryScreen()->size());
+    AppConfig *appConfig = new AppConfig(app.primaryScreen()->size()); //app.primaryScreen()->size()
     engine.rootContext()->setContextProperty("appConfig", appConfig);
 
     Player *player = new Player();
