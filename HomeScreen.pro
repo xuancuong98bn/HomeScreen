@@ -15,14 +15,19 @@ DEFINES += PROJECT_PATH=\"\\\"$${_PRO_FILE_PWD_}/\\\"\"
 
 SOURCES += \
         App/Climate/climatemodel.cpp \
-        App/Media/player.cpp \
+        App/Media/langlist.cpp \
+        App/Media/langlistmodel.cpp \
+        App/Media/mediacontroller.cpp \
         App/Media/playlistmodel.cpp \
+        App/Media/songlist.cpp \
         appconfig.cpp \
         applicationsmodel.cpp \
         main.cpp \
         xmlreader.cpp
 
 RESOURCES += qml.qrc
+
+TRANSLATIONS = App/Media/translator/Media_VI.ts
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
@@ -37,8 +42,12 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     App/Climate/climatemodel.h \
-    App/Media/player.h \
+    App/Media/langlist.h \
+    App/Media/langlistmodel.h \
+    App/Media/mediacontroller.h \
     App/Media/playlistmodel.h \
+    App/Media/songlist.h \
+    App/Media/translation.h \
     appconfig.h \
     applicationsmodel.h \
     xmlreader.h

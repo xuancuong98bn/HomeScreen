@@ -115,7 +115,7 @@ Item {
     ListView {
         x: 2 * appConfig.w_ratio
         y: 570 * appConfig.h_ratio
-        width: (1920 - 4) * appConfig.w_ratio
+        width: parent.width - spacing
         height: 604 * appConfig.h_ratio
         orientation: ListView.Horizontal
         interactive: false

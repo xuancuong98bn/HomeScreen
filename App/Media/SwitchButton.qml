@@ -1,14 +1,24 @@
-import QtQuick 2.0
+import QtQuick 2.14
 
 MouseArea {
     id: root
-    property string icon_on: ""
-    property string icon_off: ""
-    property int status: 0 //0-Off 1-On
-    implicitWidth: img.width
-    implicitHeight: img.height
+
+    property string icon_on
+    property string icon_off
+    property bool status: false //0-Off 1-On
+
+    width: 60
+    height: 30
+    anchors.verticalCenter: parent.verticalCenter
+
     Image {
         id: img
-        source: root.status === 0 ? icon_off : icon_on
+        source: root.status ? icon_on : icon_off
+        width: parent.width
+        height: parent.height
     }
+    onClicked: {
+        root.status = !root.status
+    }
+
 }

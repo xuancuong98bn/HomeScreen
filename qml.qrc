@@ -176,11 +176,17 @@
         <file>App/Media/Image/us.png</file>
         <file>App/Media/Image/USB Mussic.png</file>
         <file>App/Media/Image/vn.png</file>
+        <file>App/Media/AlbumArt.qml</file>
         <file>App/Media/AppHeader.qml</file>
-        <file>App/Media/ButtonControl.qml</file>
-        <file>App/Media/Media.qml</file>
-        <file>App/Media/MediaInfoControl.qml</file>
-        <file>App/Media/PlaylistView.qml</file>
+        <file>App/Media/ControlButton.qml</file>
+        <file>App/Media/MediaInfo.qml</file>
+        <file>App/Media/PlayList.qml</file>
         <file>App/Media/SwitchButton.qml</file>
+        <file>App/Media/TimeSlider.qml</file>
+        <file>App/Media/Media.qml</file>
+        <file>App/Media/Image/AnhLuonLaLyDo.jpg</file>
+        <file>App/Media/Image/DiVeNha.jpg</file>
+        <file>App/Media/Image/Phố không mùa Bùi Anh Tuấn.png</file>
+        <file>App/Media/Image/TetDongDay.jpg</file>
     </qresource>
 </RCC>

@@ -1,129 +1,62 @@
-/****************************************************************************
-**
-** Copyright (C) 2017 The Qt Company Ltd.
-** Contact: https://www.qt.io/licensing/
-**
-** This file is part of the examples of the Qt Toolkit.
-**
-** $QT_BEGIN_LICENSE:BSD$
-** Commercial License Usage
-** Licensees holding valid commercial Qt licenses may use this file in
-** accordance with the commercial license agreement provided with the
-** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and The Qt Company. For licensing terms
-** and conditions see https://www.qt.io/terms-conditions. For further
-** information use the contact form at https://www.qt.io/contact-us.
-**
-** BSD License Usage
-** Alternatively, you may use this file under the terms of the BSD license
-** as follows:
-**
-** "Redistribution and use in source and binary forms, with or without
-** modification, are permitted provided that the following conditions are
-** met:
-**   * Redistributions of source code must retain the above copyright
-**     notice, this list of conditions and the following disclaimer.
-**   * Redistributions in binary form must reproduce the above copyright
-**     notice, this list of conditions and the following disclaimer in
-**     the documentation and/or other materials provided with the
-**     distribution.
-**   * Neither the name of The Qt Company Ltd nor the names of its
-**     contributors may be used to endorse or promote products derived
-**     from this software without specific prior written permission.
-**
-**
-** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
-**
-** $QT_END_LICENSE$
-**
-****************************************************************************/
-
 #include "playlistmodel.h"
+#include "songlist.h"
 
-#include <QFileInfo>
-#include <QUrl>
-#include <QMediaPlaylist>
-
-PlaylistModel::PlaylistModel(QObject *parent)
-    : QAbstractListModel(parent)
+PlayListModel::PlayListModel(QObject *parent)
+    : QAbstractListModel(parent), mSongs(nullptr)
 {
 }
 
-int PlaylistModel::rowCount(const QModelIndex &parent) const
+int PlayListModel::rowCount(const QModelIndex &parent) const
 {
-   Q_UNUSED(parent);
-    return m_data.count();
+    // For list models only the root node (an invalid parent) should return the list's size. For all
+    // other (valid) parents, rowCount() should return 0 so that it does not become a tree model.
+    if (parent.isValid() || !mSongs)
+        return 0;
+
+    // FIXME: Implement me!
+    return mSongs->songs().size();
 }
 
-
-QVariant PlaylistModel::data(const QModelIndex &index, int role) const
+//implement to get data when qml involke with roleNames are defined below
+QVariant PlayListModel::data(const QModelIndex &index, int role) const
 {
-    if (index.row() < 0 || index.row() >= m_data.count())
+    if (!index.isValid() || !mSongs)
         return QVariant();
 
-    const Song &song = m_data[index.row()];
-    if (role == TitleRole)
-        return song.title();
-    else if (role == SingerRole)
-        return song.singer();
-    else if (role == SourceRole)
-        return song.source();
-    else if (role == AlbumArtRole)
-        return song.album_art();
+    // FIXME: Implement me!
+    const Song song = mSongs->songs().at(index.row());
+    switch (role) {
+    case kTitle:
+        return QVariant(QString::fromStdWString(song.title));
+    case kSinger:
+        return QVariant(QString::fromStdWString(song.singer));
+    case kArt:
+        return QVariant(song.art);
+    case kSrc:
+        return QVariant(song.src);
+    }
     return QVariant();
 }
 
-void PlaylistModel::addSong(Song &song)
+//define property will be call in qml list view
+QHash<int, QByteArray> PlayListModel::roleNames() const
 {
-    beginInsertRows(QModelIndex(), rowCount(), rowCount());
-    m_data << song;
-    endInsertRows();
+    QHash<int, QByteArray> names;
+    names[kTitle] = "title";
+    names[kSinger] = "singer";
+    names[kArt] = "art";
+    names[kSrc] = "src";
+    return names;
 }
 
-QHash<int, QByteArray> PlaylistModel::roleNames() const
+SongList *PlayListModel::songs() const
 {
-    QHash<int, QByteArray> roles;
-    roles[TitleRole] = "title";
-    roles[SingerRole] = "singer";
-    roles[SourceRole] = "source";
-    roles[AlbumArtRole] = "album_art";
-    return roles;
+    return mSongs;
 }
 
-Song::Song(const QString &title, const QString &singer, const QString &source, const QString &albumArt)
+void PlayListModel::setSongs(SongList *songs)
 {
-    m_title = title;
-    m_singer = singer;
-    m_source = source;
-    m_albumArt = albumArt;
-}
-
-QString Song::title() const
-{
-    return m_title;
-}
-
-QString Song::singer() const
-{
-    return m_singer;
-}
-
-QString Song::source() const
-{
-    return m_source;
-}
-
-QString Song::album_art() const
-{
-    return m_albumArt;
+    beginResetModel();
+    if (mSongs) mSongs->disconnect(this);
+    mSongs = songs;
 }
