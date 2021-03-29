@@ -185,4 +185,8 @@ Item {
     Component.onCompleted: {
         mController.playStateChanged.connect(onPlayStateChanged)
     }
+
+    Component.onDestruction: {
+        mController.playStateChanged.disconnect(onPlayStateChanged)
+    }
 }

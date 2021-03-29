@@ -5,11 +5,21 @@ import QtQml.Models 2.1
 
 Item {
     id: root
-    width: 1920 * appConfig.w_ratio
-    height: 1096 * appConfig.h_ratio
+    property var focusItem
     function openApplication(url){
         parent.push(url)
     }
+
+    function changeFocus(item){
+        if (focusItem !== undefined){
+            focusItem.focus = false
+        }
+        focusItem = item
+        focusItem.focus = true
+    }
+
+    width: 1920 * appConfig.w_ratio
+    height: 1096 * appConfig.h_ratio
 
     ListView {
         id: lvWidget
@@ -97,17 +107,20 @@ Item {
             id: mapWidget
             MapWidget{
                 onClicked: openApplication("qrc:/App/Map/Map.qml")
+                onReleased: changeFocus(this)
             }
         }
         Component {
             id: climateWidget
             ClimateWidget {
+                onReleased: changeFocus(this)
             }
         }
         Component {
             id: mediaWidget
             MediaWidget{
                 onClicked: openApplication("qrc:/App/Media/Media.qml")
+                onReleased: changeFocus(this)
             }
         }
     }
@@ -154,16 +167,7 @@ Item {
                         title: model.title
                         icon: model.iconPath
                         onClicked: openApplication(model.url)
-                        onReleased: {
-                            app.focus = true
-                            app.state = "Focus"
-                            for (var index = 0; index < visualModel.items.count;index++){
-                                if (index !== icon.visualIndex)
-                                    visualModel.items.get(index).focus = false
-                                else
-                                    visualModel.items.get(index).focus = true
-                            }
-                        }
+                        onReleased: changeFocus(this)
                         drag.target: icon
                     }
 
