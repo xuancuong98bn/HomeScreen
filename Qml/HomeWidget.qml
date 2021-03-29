@@ -1,4 +1,4 @@
-import QtQuick 2.12
+import QtQuick 2.14
 import QtQuick.Layouts 1.11
 import QtQuick.Controls 2.4
 import QtQml.Models 2.1
@@ -38,7 +38,7 @@ Item {
                 id: delegateRootWidget
                 width: 635 * appConfig.w_ratio
                 height: 570 * appConfig.h_ratio
-                keys: ["widget"]
+                keys: "widget"
 
                 onEntered: {
                     visualModelWidget.items.move(drag.source.visualIndex, iconWidget.visualIndex)
@@ -164,6 +164,7 @@ Item {
                                     visualModel.items.get(index).focus = true
                             }
                         }
+                        drag.target: icon
                     }
 
                     onFocusChanged: app.focus = icon.focus
@@ -172,7 +173,7 @@ Item {
                     Drag.keys: "AppButton"
 
                     states: [
-                        State {
+                        State {//xem lại xem chỗ này chạy như nào, có cần ko
                             when: icon.Drag.active
                             ParentChange {
                                 target: icon

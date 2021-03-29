@@ -4,6 +4,8 @@ MouseArea {
     id: root
     implicitWidth: 635 * appConfig.w_ratio
     implicitHeight: 570 * appConfig.h_ratio
+    //drag.target: parent
+
     Rectangle {
         width: 615 * appConfig.w_ratio
         height: 550  * appConfig.h_ratio

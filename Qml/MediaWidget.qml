@@ -24,6 +24,8 @@ MouseArea {
 
     implicitWidth: 635 * appConfig.w_ratio
     implicitHeight: 570 * appConfig.h_ratio
+    //drag.target: parent
+
     Rectangle {
         anchors{
             fill: parent
