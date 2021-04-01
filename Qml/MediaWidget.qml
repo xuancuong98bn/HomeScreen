@@ -25,7 +25,7 @@ MouseArea {
 
     implicitWidth: 635 * appConfig.w_ratio
     implicitHeight: 570 * appConfig.h_ratio
-    //drag.target: parent
+    drag.target: parent
 
     Rectangle {
         anchors{
@@ -141,7 +141,7 @@ MouseArea {
         if (!root.isFocusing) root.state = "Normal"
         else root.state = "Focus"
     }
-    onFocusChanged: {
+    onIsFocusingChanged: {
         if (root.isFocusing) root.state = "Focus"
         else root.state = "Normal"
     }
