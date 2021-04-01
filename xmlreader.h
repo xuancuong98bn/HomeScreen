@@ -7,7 +7,7 @@
 class XmlReader
 {
 public:
-    XmlReader(QString filePath, ApplicationsModel &model);
+    XmlReader(QString fileName, ApplicationsModel &model);
 private:
     QDomDocument m_xmlDoc; //The QDomDocument class represents an XML document.
     bool ReadXmlFile(QString fileName);

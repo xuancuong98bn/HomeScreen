@@ -23,7 +23,8 @@ SOURCES += \
         appconfig.cpp \
         applicationsmodel.cpp \
         main.cpp \
-        xmlreader.cpp
+        xmlreader.cpp \
+        xmlwriter.cpp
 
 RESOURCES += qml.qrc
 
@@ -50,7 +51,8 @@ HEADERS += \
     App/Media/translation.h \
     appconfig.h \
     applicationsmodel.h \
-    xmlreader.h
+    xmlreader.h \
+    xmlwriter.h
 
 LIBS += -ltag
 

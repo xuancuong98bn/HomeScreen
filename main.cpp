@@ -9,7 +9,6 @@
 #include <QQmlContext>
 #include "App/Climate/climatemodel.h"
 #include "applicationsmodel.h"
-#include "xmlreader.h"
 #include "appconfig.h"
 
 
@@ -35,7 +34,7 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
 
     ApplicationsModel appsModel;
-    XmlReader xmlReader("applications.xml", appsModel);
+    appsModel.loadApps();
     engine.rootContext()->setContextProperty("appsModel", &appsModel);
 
     AppConfig *appConfig = new AppConfig(app.primaryScreen()->size()); //app.primaryScreen()->size()

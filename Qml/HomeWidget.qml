@@ -8,6 +8,9 @@ Item {
     property var focusItem
     function openApplication(url){
         parent.push(url)
+        for(var i = 0; i <appsModel.rowCount(); i++){
+            console.log(appsModel.getData(i))
+        }
     }
 
     function changeFocus(item){
@@ -166,7 +169,18 @@ Item {
                 height: 604 * appConfig.h_ratio
                 keys: "AppButton"
 
-                onEntered: visualModel.items.move(drag.source.visualIndex, icon.visualIndex)
+                onEntered: {
+                    if (drag.source.visualIndex !== icon.visualIndex) {
+                        appsModel.move(drag.source.visualIndex, icon.visualIndex)
+                        visualModel.items.move(drag.source.visualIndex, icon.visualIndex)
+                        appsModel.saveApps()
+                    }
+                }
+
+                onDropped: {
+                    //appsModel.saveApps()
+                }
+
                 property int visualIndex: DelegateModel.itemsIndex
                 Binding { target: icon; property: "visualIndex"; value: visualIndex }
 
@@ -195,7 +209,7 @@ Item {
                     onFocusChanged: {
                         console.log("parent " + app.focus )
                         app.focus = icon.focus
-                        }
+                    }
 
                     Drag.active: app.drag.active
                     Drag.keys: "AppButton"

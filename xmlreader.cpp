@@ -1,8 +1,8 @@
 #include "xmlreader.h"
 
-XmlReader::XmlReader(QString filePath, ApplicationsModel &model)
+XmlReader::XmlReader(QString fileName, ApplicationsModel &model)
 {
-    ReadXmlFile(filePath);
+    ReadXmlFile(fileName);
     PaserXml(model);
 }
 

@@ -32,7 +32,12 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     void addApplication(ApplicationItem &item);
-
+    ApplicationItem getApplication(int position);
+    void loadApps();
+public slots:
+    QString getData(int pos);
+    void move(int from, int to);
+    void saveApps();
 protected:
     QHash<int, QByteArray> roleNames() const override;
 
