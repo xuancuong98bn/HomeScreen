@@ -4,6 +4,8 @@ import QtPositioning 5.6
 
 MouseArea {
     id: root
+    property bool isFocusing: false;
+
     preventStealing: true
     propagateComposedEvents: true
     implicitWidth: 635 * appConfig.w_ratio
@@ -84,13 +86,12 @@ MouseArea {
     ]
     onPressed: root.state = "Pressed"
     onReleased:{
-        root.focus = true
-        root.state = "Focus"
+        //root.focus = true
+        if (!root.isFocusing) root.state = "Normal"
+        else root.state = "Focus"
     }
-    onFocusChanged: {
-        if (root.focus == true )
-            root.state = "Focus"
-        else
-            root.state = "Normal"
+    onIsFocusingChanged: {
+        if (root.isFocusing == true )root.state = "Focus"
+        else root.state = "Normal"
     }
 }

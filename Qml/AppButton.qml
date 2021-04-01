@@ -6,6 +6,7 @@ MouseArea {
     implicitHeight: 604 * appConfig.h_ratio
     property string icon
     property string title
+    property bool isFocusing: false;
     Image {
         id: idBackgroud
         width: root.width
@@ -44,15 +45,14 @@ MouseArea {
             }
         }
     ]
+
     onPressed: root.state = "Pressed"
     onReleased: {
-        root.focus = true
-        root.state = "Focus"
+        if (!root.isFocusing) root.state = "Normal"
+        else root.state = "Focus"
     }
-    onFocusChanged: {
-        if (root.focus == true )
-            root.state = "Focus"
-        else
-            root.state = "Normal"
+    onIsFocusingChanged:{
+        if (root.isFocusing) root.state = "Focus"
+        else root.state = "Normal"
     }
 }

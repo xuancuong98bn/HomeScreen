@@ -2,6 +2,8 @@ import QtQuick 2.0
 
 MouseArea {
     id: root
+    property bool isFocusing: false;
+
     implicitWidth: 635 * appConfig.w_ratio
     implicitHeight: 570 * appConfig.h_ratio
     //drag.target: parent
@@ -247,13 +249,12 @@ MouseArea {
     ]
     onPressed: root.state = "Pressed"
     onReleased:{
-        root.focus = true
-        root.state = "Focus"
+        //root.focus = true
+        if (!root.isFocusing) root.state = "Normal"
+        else root.state = "Focus"
     }
-    onFocusChanged: {
-        if (root.focus == true )
-            root.state = "Focus"
-        else
-            root.state = "Normal"
+    onIsFocusingChanged: {
+        if (root.isFocusing) root.state = "Focus"
+        else root.state = "Normal"
     }
 }

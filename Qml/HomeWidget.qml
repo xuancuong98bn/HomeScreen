@@ -12,10 +12,10 @@ Item {
 
     function changeFocus(item){
         if (focusItem !== undefined){
-            focusItem.focus = false
+            focusItem.isFocusing = false
         }
         focusItem = item
-        focusItem.focus = true
+        focusItem.isFocusing = true
     }
 
     width: 1920 * appConfig.w_ratio
@@ -58,7 +58,7 @@ Item {
                 Binding { target: iconWidget; property: "visualIndex"; value: visualIndex }
                 onExited: iconWidget.item.enabled = true
                 onDropped: {
-                    console.log(drop.source.visualIndex)
+                    //console.log(drop.source.visualIndex)
                 }
 
                 Loader {
@@ -106,33 +106,52 @@ Item {
         Component {
             id: mapWidget
             MapWidget{
-                onClicked: openApplication("qrc:/App/Map/Map.qml")
-                onReleased: changeFocus(this)
+                onClicked: {
+                    openApplication("qrc:/App/Map/Map.qml")
+                    changeFocus(this)
+                }
             }
         }
         Component {
             id: climateWidget
             ClimateWidget {
-                onReleased: changeFocus(this)
+                onClicked: {
+                    changeFocus(this)
+                }
             }
         }
         Component {
             id: mediaWidget
             MediaWidget{
-                onClicked: openApplication("qrc:/App/Media/Media.qml")
-                onReleased: changeFocus(this)
+                onClicked: {
+                    openApplication("qrc:/App/Media/Media.qml")
+                    changeFocus(this)
+                }
             }
         }
     }
 
+    ScrollBar{
+        id: scrollBar
+        width: lvApps.width
+        height: 23 * appConfig.h_ratio
+        anchors.top: lvApps.top
+        anchors.left: lvApps.left
+        visible: visualModel.count > 6
+        orientation: Qt.Horizontal
+    }
+
     ListView {
+        id: lvApps
         x: 2 * appConfig.w_ratio
         y: 570 * appConfig.h_ratio
         width: parent.width - spacing
         height: 604 * appConfig.h_ratio
         orientation: ListView.Horizontal
-        interactive: false
+        interactive: scrollBar.visible
         spacing: 4 * appConfig.w_ratio
+        contentWidth: width
+        clip: true
 
         displaced: Transition {
             NumberAnimation { properties: "x,y"; easing.type: Easing.OutQuad }
@@ -166,18 +185,23 @@ Item {
                         anchors.fill: parent
                         title: model.title
                         icon: model.iconPath
-                        onClicked: openApplication(model.url)
-                        onReleased: changeFocus(this)
+                        onClicked: {
+                            openApplication(model.url)
+                            changeFocus(this)
+                        }
                         drag.target: icon
                     }
 
-                    onFocusChanged: app.focus = icon.focus
+                    onFocusChanged: {
+                        console.log("parent " + app.focus )
+                        app.focus = icon.focus
+                        }
 
                     Drag.active: app.drag.active
                     Drag.keys: "AppButton"
 
                     states: [
-                        State {//xem lại xem chỗ này chạy như nào, có cần ko
+                        State {
                             when: icon.Drag.active
                             ParentChange {
                                 target: icon
@@ -194,5 +218,7 @@ Item {
                 }
             }
         }
+
+        ScrollBar.horizontal: scrollBar
     }
 }

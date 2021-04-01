@@ -6,6 +6,7 @@ MouseArea {
     property string _title
     property string _singer
     property string _src
+    property bool isFocusing: false;
 
     function onSongChanged(t, s, sr){
         _title = t
@@ -137,24 +138,11 @@ MouseArea {
     ]
     onPressed: root.state = "Pressed"
     onReleased:{
-        root.focus = true
-        root.state = "Focus"
+        if (!root.isFocusing) root.state = "Normal"
+        else root.state = "Focus"
     }
     onFocusChanged: {
-        if (root.focus == true )
-            root.state = "Focus"
-        else
-            root.state = "Normal"
+        if (root.isFocusing) root.state = "Focus"
+        else root.state = "Normal"
     }
-
-
-//    Connections{
-//        target: player
-//        onDurationChanged:{
-//            imgDuration.width = 511 * appConfig.w_ratio
-//        }
-//        onPositionChanged: {
-//            imgPosition.width = (player.position / player.duration)*(511 * appConfig.w_ratio);
-//        }
-//    }
 }
