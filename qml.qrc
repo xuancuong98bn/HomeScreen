@@ -188,5 +188,9 @@
         <file>App/Media/Image/DiVeNha.jpg</file>
         <file>App/Media/Image/Phố không mùa Bùi Anh Tuấn.png</file>
         <file>App/Media/Image/TetDongDay.jpg</file>
+        <file>App/Video/Video.qml</file>
+        <file>App/Phone/Phone.qml</file>
+        <file>App/Radio/Radio.qml</file>
+        <file>Qml/Setting.qml</file>
     </qresource>
 </RCC>
