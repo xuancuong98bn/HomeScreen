@@ -26,6 +26,11 @@ XmlWriter::XmlWriter(QString fileName, ApplicationsModel &model)
         tagTitle.appendChild(txtTitle);
         tagName.appendChild(tagTitle);
 
+        QDomElement tagKey = m_xmlDoc.createElement("KEY");
+        QDomText txtKey = m_xmlDoc.createTextNode(app.key());
+        tagKey.appendChild(txtKey);
+        tagName.appendChild(tagKey);
+
         QDomElement tagURL = m_xmlDoc.createElement("URL");
         QDomText txtURL = m_xmlDoc.createTextNode(app.url());
         tagURL.appendChild(txtURL);

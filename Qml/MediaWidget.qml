@@ -6,7 +6,7 @@ MouseArea {
     property string _title
     property string _singer
     property string _src
-    property bool isFocusing: false;
+    property bool isFocusing: false
 
     function onSongChanged(t, s, sr){
         _title = t

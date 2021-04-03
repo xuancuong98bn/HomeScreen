@@ -43,6 +43,7 @@ void XmlReader::PaserXml(ApplicationsModel &model)
             QDomElement Child=Component.firstChild().toElement();
 
             QString title;
+            QString key;
             QString url;
             QString iconPath;
 
@@ -51,13 +52,14 @@ void XmlReader::PaserXml(ApplicationsModel &model)
             {
                 // Read Name and value
                 if (Child.tagName()=="TITLE") title = Child.firstChild().toText().data();
+                if (Child.tagName()=="KEY") key = Child.firstChild().toText().data();
                 if (Child.tagName()=="URL") url = Child.firstChild().toText().data();
                 if (Child.tagName()=="ICON_PATH") iconPath = Child.firstChild().toText().data();
 
                 // Next child
                 Child = Child.nextSibling().toElement();
             }
-            ApplicationItem item(title,url,iconPath);
+            ApplicationItem item(title, key, url,iconPath);
             model.addApplication(item);
         }
 

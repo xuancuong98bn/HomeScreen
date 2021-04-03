@@ -1,9 +1,11 @@
 #include "applicationsmodel.h"
 #include "xmlreader.h"
 #include "xmlwriter.h"
+#include <QKeySequence>
 
-ApplicationItem::ApplicationItem(QString title, QString url, QString iconPath)
+ApplicationItem::ApplicationItem(QString title, QString key, QString url, QString iconPath)
 {
+    m_key = key;
     m_title = title;
     m_url = url;
     m_iconPath = iconPath;
@@ -13,6 +15,12 @@ QString ApplicationItem::title() const
 {
     return m_title;
 }
+
+QString ApplicationItem::key() const
+{
+    return m_key;
+}
+
 
 QString ApplicationItem::url() const
 {
@@ -24,9 +32,15 @@ QString ApplicationItem::iconPath() const
     return m_iconPath;
 }
 
-QString ApplicationsModel::getData(int pos)
+QString ApplicationsModel::getUrlByKey(Qt::Key keyEvent)
 {
-    return m_data.at(pos).title();
+    for(ApplicationItem app : m_data){
+        qDebug() << QKeySequence(keyEvent).toString() << "and" << app.key();
+        if (QKeySequence(keyEvent).toString().compare(app.key()) == 0){
+            return app.url();
+        }
+    }
+    return "NONE";
 }
 
 void ApplicationsModel::move(int from, int to)

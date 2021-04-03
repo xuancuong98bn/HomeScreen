@@ -2,7 +2,7 @@ import QtQuick 2.0
 
 MouseArea {
     id: root
-    property bool isFocusing: false;
+    property bool isFocusing: false
 
     implicitWidth: 635 * appConfig.w_ratio
     implicitHeight: 570 * appConfig.h_ratio

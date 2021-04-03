@@ -38,5 +38,10 @@ ApplicationWindow {
                 easing.type: Easing.OutCubic
             }
         }
+        Keys.onPressed: {
+            if (event.key === Qt.Key_Backspace && statusBar.isShowBackBtn === true){
+                statusBar.bntBackClicked()
+            }
+        }
     }
 }

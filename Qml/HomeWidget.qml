@@ -8,9 +8,6 @@ Item {
     property var focusItem
     function openApplication(url){
         parent.push(url)
-        for(var i = 0; i <appsModel.rowCount(); i++){
-            console.log(appsModel.getData(i))
-        }
     }
 
     function changeFocus(item){
@@ -21,8 +18,19 @@ Item {
         focusItem.isFocusing = true
     }
 
+    signal appKeyPressed(var url)
+    signal widgetKeyPressed(var key)
+
     width: 1920 * appConfig.w_ratio
     height: 1096 * appConfig.h_ratio
+
+    Keys.onPressed: {
+        if (event.modifiers === Qt.NoModifier){
+            var url = appsModel.getUrlByKey(event.key)
+            appKeyPressed(url)
+        } else if (event.modifiers === Qt.ControlModifier)
+            widgetKeyPressed(event.key - Qt.Key_0)
+    }
 
     ListView {
         id: lvWidget
@@ -109,27 +117,51 @@ Item {
         Component {
             id: mapWidget
             MapWidget{
+                id: itemMap
+                function onWidgetKeyPressed(key){
+                    if (parent.visualIndex + 1 === key){
+                        openApplication("qrc:/App/Map/Map.qml")
+                        changeFocus(itemMap)
+                    }
+                }
                 onClicked: {
                     openApplication("qrc:/App/Map/Map.qml")
                     changeFocus(this)
                 }
+                Component.onCompleted: root.widgetKeyPressed.connect(onWidgetKeyPressed)
             }
         }
         Component {
             id: climateWidget
             ClimateWidget {
+                id: itemClimate
+                function onWidgetKeyPressed(key){
+                    if (parent.visualIndex + 1 === key){
+                        //openApplication("qrc:/App/Map/Map.qml")
+                        changeFocus(itemClimate)
+                    }
+                }
                 onClicked: {
                     changeFocus(this)
                 }
+                Component.onCompleted: root.widgetKeyPressed.connect(onWidgetKeyPressed)
             }
         }
         Component {
             id: mediaWidget
             MediaWidget{
+                id: itemMedia
+                function onWidgetKeyPressed(key){
+                    if (parent.visualIndex + 1 === key){
+                        openApplication("qrc:/App/Media/Media.qml")
+                        changeFocus(itemMedia)
+                    }
+                }
                 onClicked: {
                     openApplication("qrc:/App/Media/Media.qml")
                     changeFocus(this)
                 }
+                Component.onCompleted: root.widgetKeyPressed.connect(onWidgetKeyPressed)
             }
         }
     }
@@ -177,10 +209,6 @@ Item {
                     }
                 }
 
-                onDropped: {
-                    //appsModel.saveApps()
-                }
-
                 property int visualIndex: DelegateModel.itemsIndex
                 Binding { target: icon; property: "visualIndex"; value: visualIndex }
 
@@ -196,6 +224,14 @@ Item {
 
                     AppButton{
                         id: app
+
+                        function onAppKeyPressed(url){
+                            if (url === model.url){
+                                openApplication(url)
+                                changeFocus(app)
+                            }
+                        }
+
                         anchors.fill: parent
                         title: model.title
                         icon: model.iconPath
@@ -204,12 +240,10 @@ Item {
                             changeFocus(this)
                         }
                         drag.target: icon
+                        Component.onCompleted: root.appKeyPressed.connect(onAppKeyPressed)
                     }
 
-                    onFocusChanged: {
-                        console.log("parent " + app.focus )
-                        app.focus = icon.focus
-                    }
+                    onFocusChanged: app.focus = icon.focus
 
                     Drag.active: app.drag.active
                     Drag.keys: "AppButton"

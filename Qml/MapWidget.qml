@@ -4,7 +4,7 @@ import QtPositioning 5.6
 
 MouseArea {
     id: root
-    property bool isFocusing: false;
+    property bool isFocusing: false
 
     preventStealing: true
     propagateComposedEvents: true

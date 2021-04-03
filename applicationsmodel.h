@@ -4,16 +4,15 @@
 
 class ApplicationItem {
 public:
-    ApplicationItem(QString title, QString url, QString iconPath);
-
+    ApplicationItem(QString title, QString key, QString url, QString iconPath);
     QString title() const;
-
+    QString key () const;
     QString url() const;
-
     QString iconPath() const;
 
-private:
+private:    
     QString m_title;
+    QString m_key;
     QString m_url;
     QString m_iconPath;
 };
@@ -35,7 +34,7 @@ public:
     ApplicationItem getApplication(int position);
     void loadApps();
 public slots:
-    QString getData(int pos);
+    QString getUrlByKey(Qt::Key keyEvent);
     void move(int from, int to);
     void saveApps();
 protected:
