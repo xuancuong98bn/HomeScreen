@@ -45,8 +45,8 @@ QString ApplicationsModel::getUrlByKey(Qt::Key keyEvent)
 
 void ApplicationsModel::move(int from, int to)
 {
-    if (m_data.size() > from && m_data.size() > to){
-        m_data.move(from, to);
+    if (copy_data.size() > from && copy_data.size() > to){
+        copy_data.move(from, to);
     }
 }
 
@@ -85,12 +85,13 @@ void ApplicationsModel::addApplication(ApplicationItem &item)
 {
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
     m_data << item;
+    copy_data << item;
     endInsertRows();
 }
 
 ApplicationItem ApplicationsModel::getApplication(int position)
 {
-    return m_data.at(position);
+    return copy_data.at(position);
 }
 
 void ApplicationsModel::loadApps()

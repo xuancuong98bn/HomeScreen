@@ -6,10 +6,10 @@
   <ICON_PATH>qrc:/Img/HomeScreen/btn_home_menu_map</ICON_PATH>
  </APP>
  <APP ID="002">
-  <TITLE>Settings</TITLE>
+  <TITLE>Video</TITLE>
   <KEY>NONE</KEY>
-  <URL>qrc:/Qml/Setting.qml</URL>
-  <ICON_PATH>qrc:/Img/HomeScreen/btn_home_menu_settings</ICON_PATH>
+  <URL>qrc:/App/Video/Video.qml</URL>
+  <ICON_PATH>qrc:/Img/HomeScreen/btn_home_menu_climate</ICON_PATH>
  </APP>
  <APP ID="003">
   <TITLE>Media</TITLE>
@@ -18,10 +18,10 @@
   <ICON_PATH>qrc:/Img/HomeScreen/btn_home_menu_media</ICON_PATH>
  </APP>
  <APP ID="004">
-  <TITLE>Video</TITLE>
-  <KEY>NONE</KEY>
-  <URL>qrc:/App/Video/Video.qml</URL>
-  <ICON_PATH>qrc:/Img/HomeScreen/btn_home_menu_climate</ICON_PATH>
+  <TITLE>Phone</TITLE>
+  <KEY>P</KEY>
+  <URL>qrc:/App/Phone/Phone.qml</URL>
+  <ICON_PATH>qrc:/Img/HomeScreen/btn_home_menu_phone</ICON_PATH>
  </APP>
  <APP ID="005">
   <TITLE>Radio</TITLE>
@@ -30,9 +30,9 @@
   <ICON_PATH>qrc:/Img/HomeScreen/btn_home_menu_radio</ICON_PATH>
  </APP>
  <APP ID="006">
-  <TITLE>Phone</TITLE>
-  <KEY>P</KEY>
-  <URL>qrc:/App/Phone/Phone.qml</URL>
-  <ICON_PATH>qrc:/Img/HomeScreen/btn_home_menu_phone</ICON_PATH>
+  <TITLE>Settings</TITLE>
+  <KEY>NONE</KEY>
+  <URL>qrc:/Qml/Setting.qml</URL>
+  <ICON_PATH>qrc:/Img/HomeScreen/btn_home_menu_settings</ICON_PATH>
  </APP>
 </APPLICATIONS>

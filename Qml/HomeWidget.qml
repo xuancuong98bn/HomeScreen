@@ -203,7 +203,7 @@ Item {
 
                 onEntered: {
                     if (drag.source.visualIndex !== icon.visualIndex) {
-                        appsModel.move(drag.source.visualIndex, icon.visualIndex)
+                        appsModel.move(drag.source.visualIndex, icon.visualIndex);
                         visualModel.items.move(drag.source.visualIndex, icon.visualIndex)
                         appsModel.saveApps()
                     }
