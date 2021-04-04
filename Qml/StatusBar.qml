@@ -14,7 +14,7 @@ Item {
         anchors.left: parent.left
         icon: "qrc:/Img/StatusBar/btn_top_back"
         width: 135 * appConfig.w_ratio
-        height: 101 * appConfig.h_ratio
+        height: 104 * appConfig.h_ratio
         iconWidth: width
         iconHeight: height
         onClicked: bntBackClicked()
@@ -36,8 +36,6 @@ Item {
             text: "10:28"
             color: "white"
             font.pixelSize: 72 * appConfig.h_ratio
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignHCenter
             anchors.centerIn: parent
         }
         Image {
@@ -56,8 +54,6 @@ Item {
             text: "Jun. 24"
             color: "white"
             font.pixelSize: 72 * appConfig.h_ratio
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignHCenter
             anchors.centerIn: parent
         }
         Image {

@@ -6,7 +6,7 @@ import QtPositioning 5.6
 Item {
     id: root
     width: 1920 * appConfig.w_ratio
-    height: (1200-70) * appConfig.h_ratio
+    height: (1200-104) * appConfig.h_ratio
 
     Item {
         id: startAnimation

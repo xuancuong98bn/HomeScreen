@@ -3,12 +3,18 @@
 #include "xmlwriter.h"
 #include <QKeySequence>
 
-ApplicationItem::ApplicationItem(QString title, QString key, QString url, QString iconPath)
+ApplicationItem::ApplicationItem(QString id, QString title, QString key, QString url, QString iconPath)
 {
+    m_id = id;
     m_key = key;
     m_title = title;
     m_url = url;
     m_iconPath = iconPath;
+}
+
+QString ApplicationItem::id() const
+{
+    return m_id;
 }
 
 QString ApplicationItem::title() const
@@ -32,13 +38,10 @@ QString ApplicationItem::iconPath() const
     return m_iconPath;
 }
 
-QString ApplicationsModel::getUrlByKey(Qt::Key keyEvent)
+QString ApplicationsModel::getIdByKey(Qt::Key keyEvent)
 {
-    for(ApplicationItem app : m_data){
-        qDebug() << QKeySequence(keyEvent).toString() << "and" << app.key();
-        if (QKeySequence(keyEvent).toString().compare(app.key()) == 0){
-            return app.url();
-        }
+    for (ApplicationItem app : m_data){
+        if (QKeySequence(keyEvent).toString().compare(app.key())==0) return app.id();
     }
     return "NONE";
 }
@@ -72,8 +75,12 @@ QVariant ApplicationsModel::data(const QModelIndex &index, int role) const
         return QVariant();
 
     const ApplicationItem &item = m_data[index.row()];
-    if (role == TitleRole)
+    if (role == IdRole)
+        return item.id();
+    else if (role == TitleRole)
         return item.title();
+    else if (role == KeyRole)
+        return item.key();
     else if (role == UrlRole)
         return item.url();
     else if (role == IconPathRole)
@@ -102,7 +109,9 @@ void ApplicationsModel::loadApps()
 QHash<int, QByteArray> ApplicationsModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
+    roles[IdRole] = "id";
     roles[TitleRole] = "title";
+    roles[KeyRole] = "key";
     roles[UrlRole] = "url";
     roles[IconPathRole] = "iconPath";
     return roles;

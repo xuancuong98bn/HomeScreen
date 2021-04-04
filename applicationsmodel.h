@@ -4,13 +4,15 @@
 
 class ApplicationItem {
 public:
-    ApplicationItem(QString title, QString key, QString url, QString iconPath);
+    ApplicationItem(QString id, QString title, QString key, QString url, QString iconPath);
+    QString id() const;
     QString title() const;
     QString key () const;
     QString url() const;
     QString iconPath() const;
 
 private:    
+    QString m_id;
     QString m_title;
     QString m_key;
     QString m_url;
@@ -22,7 +24,9 @@ class ApplicationsModel : public QAbstractListModel
     Q_OBJECT
 public:
     enum Roles {
-        TitleRole = Qt::UserRole + 1,
+        IdRole = Qt::UserRole + 1,
+        TitleRole,
+        KeyRole,
         UrlRole,
         IconPathRole
     };
@@ -34,7 +38,7 @@ public:
     ApplicationItem getApplication(int position);
     void loadApps();
 public slots:
-    QString getUrlByKey(Qt::Key keyEvent);
+    QString getIdByKey(Qt::Key keyEvent);
     void move(int from, int to);
     void saveApps();
 protected:

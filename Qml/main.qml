@@ -39,8 +39,11 @@ ApplicationWindow {
             }
         }
         Keys.onPressed: {
-            if (event.key === Qt.Key_Backspace && statusBar.isShowBackBtn === true){
+            if (statusBar.isShowBackBtn === true && event.key === Qt.Key_Backspace){
                 statusBar.bntBackClicked()
+            }
+            if (event.key === Qt.Key_Home){
+                while (stackView.depth > 1) stackView.pop()
             }
         }
     }

@@ -59,7 +59,7 @@ void XmlReader::PaserXml(ApplicationsModel &model)
                 // Next child
                 Child = Child.nextSibling().toElement();
             }
-            ApplicationItem item(title, key, url,iconPath);
+            ApplicationItem item(ID, title, key, url,iconPath);
             model.addApplication(item);
         }
 

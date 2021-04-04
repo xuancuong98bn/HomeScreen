@@ -18,16 +18,24 @@ Item {
         focusItem.isFocusing = true
     }
 
-    signal appKeyPressed(var url)
+    signal appKeyPressed(var appID)
     signal widgetKeyPressed(var key)
+    signal widgetFirstFocus()
+    signal appFirstFocus()
+    signal leftItemFocus()
+    signal rightItemFocus()
 
     width: 1920 * appConfig.w_ratio
     height: 1096 * appConfig.h_ratio
 
     Keys.onPressed: {
+        if (event.key === Qt.Key_Up) widgetFirstFocus()
+        if (event.key === Qt.Key_Down) appFirstFocus()
+        if (event.key === Qt.Key_Left) leftItemFocus()
+        if (event.key === Qt.Key_Right) rightItemFocus()
         if (event.modifiers === Qt.NoModifier){
-            var url = appsModel.getUrlByKey(event.key)
-            appKeyPressed(url)
+            var appID = appsModel.getIdByKey(event.key)
+            appKeyPressed(appID)
         } else if (event.modifiers === Qt.ControlModifier)
             widgetKeyPressed(event.key - Qt.Key_0)
     }
@@ -225,9 +233,9 @@ Item {
                     AppButton{
                         id: app
 
-                        function onAppKeyPressed(url){
-                            if (url === model.url){
-                                openApplication(url)
+                        function onAppKeyPressed(appID){
+                            if (appID === model.id){
+                                openApplication(app.url)
                                 changeFocus(app)
                             }
                         }
@@ -235,12 +243,15 @@ Item {
                         anchors.fill: parent
                         title: model.title
                         icon: model.iconPath
+                        url: model.url
                         onClicked: {
-                            openApplication(model.url)
+                            openApplication(this.url)
                             changeFocus(this)
                         }
                         drag.target: icon
-                        Component.onCompleted: root.appKeyPressed.connect(onAppKeyPressed)
+                        Component.onCompleted: {
+                            root.appKeyPressed.connect(onAppKeyPressed)
+                        }
                     }
 
                     onFocusChanged: app.focus = icon.focus
