@@ -46,6 +46,14 @@ QString ApplicationsModel::getIdByKey(Qt::Key keyEvent)
     return "NONE";
 }
 
+QString ApplicationsModel::getUrlByKey(Qt::Key keyEvent)
+{
+    for (ApplicationItem app : m_data){
+        if (QKeySequence(keyEvent).toString().compare(app.key())==0) return app.url();
+    }
+    return "NONE";
+}
+
 void ApplicationsModel::move(int from, int to)
 {
     if (copy_data.size() > from && copy_data.size() > to){

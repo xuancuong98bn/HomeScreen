@@ -39,6 +39,7 @@ public:
     void loadApps();
 public slots:
     QString getIdByKey(Qt::Key keyEvent);
+    QString getUrlByKey(Qt::Key keyEvent);
     void move(int from, int to);
     void saveApps();
 protected:

@@ -33,11 +33,6 @@ Item {
         if (event.key === Qt.Key_Down) appFirstFocus()
         if (event.key === Qt.Key_Left) leftItemFocus()
         if (event.key === Qt.Key_Right) rightItemFocus()
-        if (event.modifiers === Qt.NoModifier){
-            var appID = appsModel.getIdByKey(event.key)
-            appKeyPressed(appID)
-        } else if (event.modifiers === Qt.ControlModifier)
-            widgetKeyPressed(event.key - Qt.Key_0)
     }
 
     ListView {

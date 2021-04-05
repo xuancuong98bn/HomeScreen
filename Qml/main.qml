@@ -26,7 +26,7 @@ ApplicationWindow {
         id: stackView
         width: 1920 * appConfig.w_ratio
         anchors.top: statusBar.bottom
-        initialItem: HomeWidget{}
+        initialItem: HomeWidget{id: home}
         onCurrentItemChanged: {
             currentItem.forceActiveFocus()
         }
@@ -44,7 +44,12 @@ ApplicationWindow {
             }
             if (event.key === Qt.Key_Home){
                 while (stackView.depth > 1) stackView.pop()
+            } else {
+                var url = appsModel.getUrlByKey(event.key)
+                if (url !== "NONE") home.openApplication(url)
             }
+            if (event.modifiers === Qt.ControlModifier)
+               home.widgetKeyPressed(event.key - Qt.Key_0)
         }
     }
 }
