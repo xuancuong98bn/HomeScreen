@@ -19,9 +19,11 @@ public:
     QString calculateTime(int time);
     void setRoot(QObject *value);
     SongList* getSongList();
-
+    void updateInfo(int position);
 signals:
     void playStateChanged(bool state);
+    void shuffleStateChanged(bool state);
+    void repeatStateChanged(bool state);
     void progressChanged(double pro);
     void songChanged(QString title, QString singer, QString src);
 
@@ -32,6 +34,9 @@ public slots:
     void previous();
     void suffle(bool status);
     void repeat(bool status);
+    void volumnUp();
+    void volumnDown();
+    void volumnMute();
 
     void onSongChanged(int position);
     void timerAction();
@@ -39,6 +44,7 @@ public slots:
     void durationChanged(qint64 duration);
     void seek(double ratio);
     void statusChanged(QMediaPlayer::MediaStatus status);
+    void updateInfo();
 private:
     QObject *root;
     SongList *songList;

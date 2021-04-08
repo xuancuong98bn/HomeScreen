@@ -7,6 +7,10 @@ MouseArea {
     property string icon_off
     property bool status: false //0-Off 1-On
 
+    function changeStatus(toStatus){
+        status = toStatus
+    }
+
     width: 60
     height: 30
     anchors.verticalCenter: parent.verticalCenter

@@ -46,12 +46,10 @@ QString ApplicationsModel::getIdByKey(Qt::Key keyEvent)
     return "NONE";
 }
 
-QString ApplicationsModel::getUrlByKey(Qt::Key keyEvent)
+QString ApplicationsModel::getIdByIndex(int index)
 {
-    for (ApplicationItem app : m_data){
-        if (QKeySequence(keyEvent).toString().compare(app.key())==0) return app.url();
-    }
-    return "NONE";
+    if (index < copy_data.size()) return copy_data.at(index).id();
+    else return "NONE";
 }
 
 void ApplicationsModel::move(int from, int to)

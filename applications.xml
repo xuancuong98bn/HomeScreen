@@ -1,7 +1,7 @@
 <APPLICATIONS>
  <APP ID="001">
   <TITLE>Map</TITLE>
-  <KEY>M</KEY>
+  <KEY>N</KEY>
   <URL>qrc:/App/Map/Map.qml</URL>
   <ICON_PATH>qrc:/Img/HomeScreen/btn_home_menu_map</ICON_PATH>
  </APP>
@@ -13,7 +13,7 @@
  </APP>
  <APP ID="003">
   <TITLE>Media</TITLE>
-  <KEY>A</KEY>
+  <KEY>M</KEY>
   <URL>qrc:/App/Media/Media.qml</URL>
   <ICON_PATH>qrc:/Img/HomeScreen/btn_home_menu_media</ICON_PATH>
  </APP>
@@ -31,12 +31,6 @@
  </APP>
  <APP ID="006">
   <TITLE>Settings</TITLE>
-  <KEY>NONE</KEY>
-  <URL>qrc:/Qml/Setting.qml</URL>
-  <ICON_PATH>qrc:/Img/HomeScreen/btn_home_menu_settings</ICON_PATH>
- </APP>
- <APP ID="007">
-  <TITLE>Settings2</TITLE>
   <KEY>NONE</KEY>
   <URL>qrc:/Qml/Setting.qml</URL>
   <ICON_PATH>qrc:/Img/HomeScreen/btn_home_menu_settings</ICON_PATH>

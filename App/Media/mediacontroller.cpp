@@ -26,7 +26,7 @@ void MediaController::start()
 //        QObject::connect(slider, SIGNAL(seekTo(double)), this, SLOT(seek(double)));
 //        QObject::connect(slider, SIGNAL(widthChange()), this, SLOT(calculateProgress()));
 
-        play();
+        //play();
         onSongChanged(0);
         clock->start(1000);
     }
@@ -98,37 +98,33 @@ void MediaController::repeat(bool status)
     isRepeat = status;
 }
 
+void MediaController::volumnUp()
+{
+    if (player->volume() <= 90) player->setVolume(player->volume()+10);
+    else player->setVolume(100);
+}
+
+void MediaController::volumnDown()
+{
+    if (player->volume() > 9) player->setVolume(player->volume()-10);
+    else player->setVolume(0);
+}
+
+void MediaController::volumnMute()
+{
+    player->setMuted(!player->isMuted());
+}
+
 //handle all change when the song change
 void MediaController::onSongChanged(int position)
 {
-    //set currentIndex of playList
-    QObject *plist = root->findChild<QObject*>("playListID");
-    if (plist){
-        plist->setProperty("currentIndex", position);
-    }
-    //set information of MediaInfo
-    QString t = QString::fromStdWString(songList->songs().at(position).title);
-    QString s = QString::fromStdWString(songList->songs().at(position).singer);
-    QString a = songList->songs().at(position).art;
-    QObject *info = root->findChild<QObject*>("rMediaInfo");
-    if (info){
-        info->setProperty("title", t);
-        info->setProperty("singer", s);
-        info->setProperty("amount", songList->songs().size());
-    }
-    //set album art property
-    QObject *albumArt = root->findChild<QObject*>("rAlbumArt");
-    if (albumArt){
-        albumArt->setProperty("currentIndex", position-1);
-        albumArt->setProperty("currentSong", position);
-    }
+    updateInfo(position);
     //set timePlayed text for time slider
     //have this code will make text change back to zero quickly when change song
     QObject *slider = root->findChild<QObject*>("rTimeSlider");
     if (slider){
         slider->setProperty("timePlayed", "00:00");
     }
-    emit songChanged(t, s, a);
 }
 
 //action for timer when timer timeout
@@ -173,6 +169,7 @@ void MediaController::seek(double ratio)
     if (slider){
         slider->setProperty("timePlayed", calculateTime(count));
     }
+    emit progressChanged(ratio);
 }
 
 //check status of media when change
@@ -186,6 +183,42 @@ void MediaController::statusChanged(QMediaPlayer::MediaStatus status)
         emit progressChanged(0);
         count = 0;
     }
+}
+
+void MediaController::updateInfo()
+{
+    updateInfo(playlist->currentIndex());
+    emit playStateChanged(player->state()==QMediaPlayer::State::PlayingState);
+    emit shuffleStateChanged(playlist->playbackMode() == QMediaPlaylist::Random);
+    emit repeatStateChanged(isRepeat);
+    durationChanged(player->duration());
+    calculateProgress();
+}
+
+void MediaController::updateInfo(int position)
+{
+    //set currentIndex of playList
+    QObject *plist = root->findChild<QObject*>("playListID");
+    if (plist){
+        plist->setProperty("currentIndex", position);
+    }
+    //set information of MediaInfo
+    QString t = QString::fromStdWString(songList->songs().at(position).title);
+    QString s = QString::fromStdWString(songList->songs().at(position).singer);
+    QString a = songList->songs().at(position).art;
+    QObject *info = root->findChild<QObject*>("rMediaInfo");
+    if (info){
+        info->setProperty("title", t);
+        info->setProperty("singer", s);
+        info->setProperty("amount", songList->songs().size());
+    }
+    //set album art property
+    QObject *albumArt = root->findChild<QObject*>("rAlbumArt");
+    if (albumArt){
+        albumArt->setProperty("currentIndex", position-1);
+        albumArt->setProperty("currentSong", position);
+    }
+    emit songChanged(t, s, a);
 }
 
 //setter of root

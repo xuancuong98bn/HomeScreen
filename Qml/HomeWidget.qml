@@ -6,6 +6,9 @@ import QtQml.Models 2.1
 Item {
     id: root
     property var focusItem
+    property int widgetFocusing : -1
+    property int appFocusing : -1
+
     function openApplication(url){
         parent.push(url)
     }
@@ -17,22 +20,46 @@ Item {
         focusItem = item
         focusItem.isFocusing = true
     }
+    function moveAppKey(key){
+        if (appsModel.rowCount() > 0) {
+            if (key === Qt.Key_Left){
+                if (appFocusing == -1) appFocusing = 0
+                appFocusing = (appFocusing + appsModel.rowCount()-1)%appsModel.rowCount()
+            }
+            if (key === Qt.Key_Right) appFocusing = (appFocusing + 1)%appsModel.rowCount()
+            if (key === Qt.Key_Down) appFocusing = 0
+            appKeyPressed(appsModel.getIdByIndex(appFocusing), false)
+        }
+    }
 
-    signal appKeyPressed(var appID)
-    signal widgetKeyPressed(var key)
-    signal widgetFirstFocus()
-    signal appFirstFocus()
-    signal leftItemFocus()
-    signal rightItemFocus()
+    signal appKeyPressed(var appID, var isOpened)
+    signal widgetKeyPressed(var index, var isOpened)
 
     width: 1920 * appConfig.w_ratio
     height: 1096 * appConfig.h_ratio
 
     Keys.onPressed: {
-        if (event.key === Qt.Key_Up) widgetFirstFocus()
-        if (event.key === Qt.Key_Down) appFirstFocus()
-        if (event.key === Qt.Key_Left) leftItemFocus()
-        if (event.key === Qt.Key_Right) rightItemFocus()
+        switch (event.key){
+        case Qt.Key_Up:
+            widgetKeyPressed(0, false)
+            break;
+        case Qt.Key_Down:
+            widgetFocusing = -1
+            moveAppKey(Qt.Key_Down)
+            break;
+        case Qt.Key_Left:
+            if (widgetFocusing >= 0) widgetKeyPressed((widgetFocusing+2)%3, false)
+            else moveAppKey(Qt.Key_Left)
+            break;
+        case Qt.Key_Right:
+            if (widgetFocusing >= 0) widgetKeyPressed((widgetFocusing+1)%3, false)
+            else moveAppKey(Qt.Key_Right)
+            break;
+        case Qt.Key_Return:
+            if (widgetFocusing >= 0) widgetKeyPressed(widgetFocusing, true)
+            else if (appsModel.rowCount() > 0) appKeyPressed(appsModel.getIdByIndex(appFocusing), true)
+            break;
+        }
     }
 
     ListView {
@@ -121,31 +148,37 @@ Item {
             id: mapWidget
             MapWidget{
                 id: itemMap
-                function onWidgetKeyPressed(key){
-                    if (parent.visualIndex + 1 === key){
-                        openApplication("qrc:/App/Map/Map.qml")
+                function onWidgetKeyPressed(index, isOpened){
+                    if (parent.visualIndex === index){
+                        if (isOpened) openApplication("qrc:/App/Map/Map.qml")
                         changeFocus(itemMap)
+                        widgetFocusing = index
                     }
                 }
                 onClicked: {
                     openApplication("qrc:/App/Map/Map.qml")
                     changeFocus(this)
+                    widgetFocusing = parent.visualIndex
                 }
-                Component.onCompleted: root.widgetKeyPressed.connect(onWidgetKeyPressed)
+                Component.onCompleted: {
+                    root.widgetKeyPressed.connect(onWidgetKeyPressed)
+                }
             }
         }
         Component {
             id: climateWidget
             ClimateWidget {
                 id: itemClimate
-                function onWidgetKeyPressed(key){
-                    if (parent.visualIndex + 1 === key){
-                        //openApplication("qrc:/App/Map/Map.qml")
+                function onWidgetKeyPressed(index, isOpened){
+                    if (parent.visualIndex === index){
+                        //if (isOpened) openApplication("qrc:/App/Map/Map.qml")
                         changeFocus(itemClimate)
+                        widgetFocusing = index
                     }
                 }
                 onClicked: {
                     changeFocus(this)
+                    widgetFocusing = parent.visualIndex
                 }
                 Component.onCompleted: root.widgetKeyPressed.connect(onWidgetKeyPressed)
             }
@@ -154,15 +187,17 @@ Item {
             id: mediaWidget
             MediaWidget{
                 id: itemMedia
-                function onWidgetKeyPressed(key){
-                    if (parent.visualIndex + 1 === key){
-                        openApplication("qrc:/App/Media/Media.qml")
+                function onWidgetKeyPressed(index, isOpened){
+                    if (parent.visualIndex === index){
+                        if (isOpened) openApplication("qrc:/App/Media/Media.qml")
                         changeFocus(itemMedia)
+                        widgetFocusing = index
                     }
                 }
                 onClicked: {
                     openApplication("qrc:/App/Media/Media.qml")
                     changeFocus(this)
+                    widgetFocusing = parent.visualIndex
                 }
                 Component.onCompleted: root.widgetKeyPressed.connect(onWidgetKeyPressed)
             }
@@ -228,10 +263,11 @@ Item {
                     AppButton{
                         id: app
 
-                        function onAppKeyPressed(appID){
+                        function onAppKeyPressed(appID, isOpened){
                             if (appID === model.id){
-                                openApplication(app.url)
+                                if (isOpened) openApplication(app.url)
                                 changeFocus(app)
+                                widgetFocusing = -1
                             }
                         }
 

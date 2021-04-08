@@ -39,17 +39,32 @@ ApplicationWindow {
             }
         }
         Keys.onPressed: {
-            if (statusBar.isShowBackBtn === true && event.key === Qt.Key_Backspace){
-                statusBar.bntBackClicked()
-            }
-            if (event.key === Qt.Key_Home){
-                while (stackView.depth > 1) stackView.pop()
-            } else {
-                var url = appsModel.getUrlByKey(event.key)
-                if (url !== "NONE") home.openApplication(url)
+            switch (event.key){
+                case Qt.Key_Backspace:
+                    if (statusBar.isShowBackBtn === true) statusBar.bntBackClicked()
+                    break;
+                case Qt.Key_Home:
+                    while (stackView.depth > 1) stackView.pop()
+                    break;
+                case Qt.Key_PageUp:
+                    mController.volumnUp()
+                    break;
+                case Qt.Key_PageDown:
+                    mController.volumnDown();
+                    break;
+                case Qt.Key_End:
+                    mController.volumnMute();
+                    break;
+                case Qt.Key_Space:
+                    mController.play();
+                    break;
+                default:
+                    var id = appsModel.getIdByKey(event.key)
+                    home.appKeyPressed(id, true)
+                    break;
             }
             if (event.modifiers === Qt.ControlModifier)
-               home.widgetKeyPressed(event.key - Qt.Key_0)
+               home.widgetKeyPressed(event.key - Qt.Key_1, true)
         }
     }
 }

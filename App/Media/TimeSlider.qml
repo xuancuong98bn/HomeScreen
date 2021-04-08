@@ -98,6 +98,7 @@ Item {
         mController.progressChanged.connect(onProgressChanged)
         this.seekTo.connect(mController.seek)
         this.widthChange.connect(mController.calculateProgress)
+        mController.updateInfo()
     }
 
     Component.onDestruction: {

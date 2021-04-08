@@ -37,7 +37,7 @@ Item {
         AppHeader{
             id: header
             width: parent.width
-            height: 70
+            height: 104 * appConfig.h_ratio
 
             Component.onCompleted: {
                 header.collapse.connect(onCollapsed)
@@ -184,9 +184,13 @@ Item {
 
     Component.onCompleted: {
         mController.playStateChanged.connect(onPlayStateChanged)
+        mController.shuffleStateChanged.connect(btnSuffle.changeStatus)
+        mController.repeatStateChanged.connect(btnRepeat.changeStatus)
     }
 
     Component.onDestruction: {
         mController.playStateChanged.disconnect(onPlayStateChanged)
+        mController.shuffleStateChanged.disconnect(btnSuffle.changeStatus)
+        mController.repeatStateChanged.disconnect(btnRepeat.changeStatus)
     }
 }

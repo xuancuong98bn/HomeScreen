@@ -7,7 +7,7 @@ Item {
     height: (1200-104) * appConfig.h_ratio
     Rectangle{
         width: parent.width
-        height: 70
+        height: 104 * appConfig.h_ratio
         color: "#2B2937"
         Text {
             text: qsTr("Phone")
