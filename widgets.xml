@@ -5,7 +5,7 @@
  </WID>
  <WID ID="002">
   <TYPE>climate</TYPE>
-  <URL>qrc:/App/Cliamte/Climate.qml</URL>
+  <URL>qrc:/App/Climate/Climate.qml</URL>
  </WID>
  <WID ID="003">
   <TYPE>media</TYPE>

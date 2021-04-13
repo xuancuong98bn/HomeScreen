@@ -192,5 +192,6 @@
         <file>App/Phone/Phone.qml</file>
         <file>App/Radio/Radio.qml</file>
         <file>Qml/Setting.qml</file>
+        <file>App/Climate/Climate.qml</file>
     </qresource>
 </RCC>

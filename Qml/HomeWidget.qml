@@ -78,12 +78,7 @@ Item {
 
         model: DelegateModel {
             id: visualModelWidget
-            model: ListModel {
-                id: widgetModel
-                ListElement { type: "map" }
-                ListElement { type: "climate" }
-                ListElement { type: "media" }
-            }
+            model: widsModel
 
             delegate: DropArea {
                 id: delegateRootWidget
@@ -92,7 +87,11 @@ Item {
                 keys: "widget"
 
                 onEntered: {
-                    visualModelWidget.items.move(drag.source.visualIndex, iconWidget.visualIndex)
+                    if (drag.source.visualIndex !== iconWidget.visualIndex) {
+                        widsModel.move(drag.source.visualIndex, iconWidget.visualIndex);
+                        visualModelWidget.items.move(drag.source.visualIndex, iconWidget.visualIndex)
+                        widsModel.saveWidgets()
+                    }
                     iconWidget.item.enabled = false
                 }
                 property int visualIndex: DelegateModel.itemsIndex
@@ -150,13 +149,13 @@ Item {
                 id: itemMap
                 function onWidgetKeyPressed(index, isOpened){
                     if (parent.visualIndex === index){
-                        if (isOpened) openApplication("qrc:/App/Map/Map.qml")
+                        if (isOpened) openApplication(widsModel.getUrlByType("map"))
                         changeFocus(itemMap)
                         widgetFocusing = index
                     }
                 }
                 onClicked: {
-                    openApplication("qrc:/App/Map/Map.qml")
+                    openApplication(widsModel.getUrlByType("map"))
                     changeFocus(this)
                     widgetFocusing = parent.visualIndex
                 }
@@ -171,12 +170,13 @@ Item {
                 id: itemClimate
                 function onWidgetKeyPressed(index, isOpened){
                     if (parent.visualIndex === index){
-                        //if (isOpened) openApplication("qrc:/App/Map/Map.qml")
+                        if (isOpened) openApplication(widsModel.getUrlByType("climate"))
                         changeFocus(itemClimate)
                         widgetFocusing = index
                     }
                 }
                 onClicked: {
+                    openApplication(widsModel.getUrlByType("climate"))
                     changeFocus(this)
                     widgetFocusing = parent.visualIndex
                 }
@@ -189,13 +189,13 @@ Item {
                 id: itemMedia
                 function onWidgetKeyPressed(index, isOpened){
                     if (parent.visualIndex === index){
-                        if (isOpened) openApplication("qrc:/App/Media/Media.qml")
+                        if (isOpened) openApplication(widsModel.getUrlByType("media"))
                         changeFocus(itemMedia)
                         widgetFocusing = index
                     }
                 }
                 onClicked: {
-                    openApplication("qrc:/App/Media/Media.qml")
+                    openApplication(widsModel.getUrlByType("media"))
                     changeFocus(this)
                     widgetFocusing = parent.visualIndex
                 }
