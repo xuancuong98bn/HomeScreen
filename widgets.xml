@@ -1,0 +1,14 @@
+<WIDGETS>
+ <WID ID="001">
+  <TYPE>map</TYPE>
+  <URL>qrc:/App/Map/Map.qml</URL>
+ </WID>
+ <WID ID="002">
+  <TYPE>climate</TYPE>
+  <URL>qrc:/App/Cliamte/Climate.qml</URL>
+ </WID>
+ <WID ID="003">
+  <TYPE>media</TYPE>
+  <URL>qrc:/App/Media/Media.qml</URL>
+ </WID>
+</WIDGETS>

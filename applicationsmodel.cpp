@@ -54,7 +54,7 @@ QString ApplicationsModel::getIdByIndex(int index)
 
 void ApplicationsModel::move(int from, int to)
 {
-    if (copy_data.size() > from && copy_data.size() > to){
+    if (from >= 0 && to >= 0 && copy_data.size() > from && copy_data.size() > to){
         copy_data.move(from, to);
     }
 }

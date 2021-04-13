@@ -9,6 +9,7 @@
 #include <QQmlContext>
 #include "App/Climate/climatemodel.h"
 #include "applicationsmodel.h"
+#include "widgetsmodel.h"
 #include "appconfig.h"
 
 
@@ -35,6 +36,10 @@ int main(int argc, char *argv[])
     ApplicationsModel appsModel;
     appsModel.loadApps();
     engine.rootContext()->setContextProperty("appsModel", &appsModel);
+
+    WidgetsModel widsModel;
+    widsModel.loadWidgets();
+    engine.rootContext()->setContextProperty("widsModel", &widsModel);
 
     AppConfig *appConfig = new AppConfig(app.primaryScreen()->size()); //app.primaryScreen()->size()
     engine.rootContext()->setContextProperty("appConfig", appConfig);

@@ -23,6 +23,7 @@ SOURCES += \
         appconfig.cpp \
         applicationsmodel.cpp \
         main.cpp \
+        widgetsmodel.cpp \
         xmlreader.cpp \
         xmlwriter.cpp
 
@@ -51,6 +52,7 @@ HEADERS += \
     App/Media/translation.h \
     appconfig.h \
     applicationsmodel.h \
+    widgetsmodel.h \
     xmlreader.h \
     xmlwriter.h
 
@@ -58,4 +60,5 @@ LIBS += -ltag
 
 DISTFILES += \
     Dbus/climate.xml \
-    applications.xml
+    applications.xml \
+    widgets.xml
