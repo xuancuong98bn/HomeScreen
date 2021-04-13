@@ -20,6 +20,7 @@ Item {
         focusItem = item
         focusItem.isFocusing = true
     }
+
     function moveAppKey(key){
         if (appsModel.rowCount() > 0) {
             if (key === Qt.Key_Left){
@@ -97,9 +98,6 @@ Item {
                 property int visualIndex: DelegateModel.itemsIndex
                 Binding { target: iconWidget; property: "visualIndex"; value: visualIndex }
                 onExited: iconWidget.item.enabled = true
-                onDropped: {
-                    //console.log(drop.source.visualIndex)
-                }
 
                 Loader {
                     id: iconWidget
@@ -154,14 +152,8 @@ Item {
                         widgetFocusing = index
                     }
                 }
-                onClicked: {
-                    openApplication(widsModel.getUrlByType("map"))
-                    changeFocus(this)
-                    widgetFocusing = parent.visualIndex
-                }
-                Component.onCompleted: {
-                    root.widgetKeyPressed.connect(onWidgetKeyPressed)
-                }
+                onClicked: onWidgetKeyPressed(parent.visualIndex, true)
+                Component.onCompleted: root.widgetKeyPressed.connect(onWidgetKeyPressed)
             }
         }
         Component {
@@ -175,11 +167,7 @@ Item {
                         widgetFocusing = index
                     }
                 }
-                onClicked: {
-                    openApplication(widsModel.getUrlByType("climate"))
-                    changeFocus(this)
-                    widgetFocusing = parent.visualIndex
-                }
+                onClicked: onWidgetKeyPressed(parent.visualIndex, true)
                 Component.onCompleted: root.widgetKeyPressed.connect(onWidgetKeyPressed)
             }
         }
@@ -194,11 +182,7 @@ Item {
                         widgetFocusing = index
                     }
                 }
-                onClicked: {
-                    openApplication(widsModel.getUrlByType("media"))
-                    changeFocus(this)
-                    widgetFocusing = parent.visualIndex
-                }
+                onClicked: onWidgetKeyPressed(parent.visualIndex, true)
                 Component.onCompleted: root.widgetKeyPressed.connect(onWidgetKeyPressed)
             }
         }
@@ -262,7 +246,6 @@ Item {
 
                     AppButton{
                         id: app
-
                         function onAppKeyPressed(appID, isOpened){
                             if (appID === model.id){
                                 if (isOpened) openApplication(app.url)
@@ -270,19 +253,13 @@ Item {
                                 widgetFocusing = -1
                             }
                         }
-
                         anchors.fill: parent
                         title: model.title
                         icon: model.iconPath
                         url: model.url
-                        onClicked: {
-                            openApplication(this.url)
-                            changeFocus(this)
-                        }
+                        onClicked: onAppKeyPressed(model.id, true)
                         drag.target: icon
-                        Component.onCompleted: {
-                            root.appKeyPressed.connect(onAppKeyPressed)
-                        }
+                        Component.onCompleted:root.appKeyPressed.connect(onAppKeyPressed)
                     }
 
                     onFocusChanged: app.focus = icon.focus
