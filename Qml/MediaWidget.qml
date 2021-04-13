@@ -12,6 +12,7 @@ MouseArea {
         _title = t
         _singer = s
         _src = "qrc:/App/Media/"+sr
+        changeAnim.start()
     }
 
     function onProgressChanged(pro){
@@ -111,6 +112,15 @@ MouseArea {
         width: 0
         height: 6 * appConfig.h_ratio
         source: "qrc:/Img/HomeScreen/widget_media_pg_s.png"
+    }
+
+    NumberAnimation {
+        id: changeAnim
+        targets: [bgBlur,bgInner,txtSinger,txtTitle]
+        properties: "opacity"
+        from:0.0
+        to:1.0
+        duration: 1000
     }
 
     states: [
