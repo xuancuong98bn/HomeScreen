@@ -6,7 +6,6 @@ MouseArea {
     implicitHeight: 604 * appConfig.h_ratio
     property string icon
     property string title
-    property string url
     property bool isFocusing: false;
     Image {
         id: idBackgroud

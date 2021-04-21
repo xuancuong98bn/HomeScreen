@@ -7,7 +7,7 @@ Item {
     id: root
     property var focusItem
     property int widgetFocusing : -1
-    property int appFocusing : -1
+    property int appFocusing : 0
 
     function openApplication(url){
         parent.push(url)
@@ -21,18 +21,6 @@ Item {
         focusItem.isFocusing = true
     }
 
-    function moveAppKey(key){
-        if (appsModel.rowCount() > 0) {
-            if (key === Qt.Key_Left){
-                if (appFocusing == -1) appFocusing = 0
-                appFocusing = (appFocusing + appsModel.rowCount()-1)%appsModel.rowCount()
-            }
-            if (key === Qt.Key_Right) appFocusing = (appFocusing + 1)%appsModel.rowCount()
-            if (key === Qt.Key_Down) appFocusing = 0
-            appKeyPressed(appsModel.getIdByIndex(appFocusing), false)
-        }
-    }
-
     signal appKeyPressed(var appID, var isOpened)
     signal widgetKeyPressed(var index, var isOpened)
 
@@ -42,25 +30,27 @@ Item {
     Keys.onPressed: {
         switch (event.key){
         case Qt.Key_Up:
+            appFocusing = -1
             widgetKeyPressed(0, false)
             break;
         case Qt.Key_Down:
             widgetFocusing = -1
-            moveAppKey(Qt.Key_Down)
+            if (appsModel.rowCount() > 0) appFocusing = 0
             break;
         case Qt.Key_Left:
             if (widgetFocusing >= 0) widgetKeyPressed((widgetFocusing+2)%3, false)
-            else moveAppKey(Qt.Key_Left)
+            else if (appsModel.rowCount() > 0) appFocusing = (appFocusing + appsModel.rowCount()-1)%appsModel.rowCount()
             break;
         case Qt.Key_Right:
             if (widgetFocusing >= 0) widgetKeyPressed((widgetFocusing+1)%3, false)
-            else moveAppKey(Qt.Key_Right)
+            else if (appsModel.rowCount() > 0) appFocusing = (appFocusing + 1)%appsModel.rowCount()
             break;
         case Qt.Key_Return:
             if (widgetFocusing >= 0) widgetKeyPressed(widgetFocusing, true)
             else if (appsModel.rowCount() > 0) appKeyPressed(appsModel.getIdByIndex(appFocusing), true)
             break;
         }
+        if (appFocusing >= 0) appKeyPressed(appsModel.getIdByIndex(appFocusing), false)
     }
 
     ListView {
@@ -88,7 +78,10 @@ Item {
                 keys: "widget"
 
                 onEntered: {
+                    if (drag.source.isFocusing) widgetFocusing = iconWidget.visualIndex
                     if (drag.source.visualIndex !== iconWidget.visualIndex) {
+                        if (drag.source.visualIndex > widgetFocusing && widgetFocusing >= iconWidget.visualIndex) widgetFocusing ++
+                        if (drag.source.visualIndex < widgetFocusing && widgetFocusing <= iconWidget.visualIndex) widgetFocusing --
                         widsModel.move(drag.source.visualIndex, iconWidget.visualIndex);
                         visualModelWidget.items.move(drag.source.visualIndex, iconWidget.visualIndex)
                         widsModel.saveWidgets()
@@ -102,6 +95,7 @@ Item {
                 Loader {
                     id: iconWidget
                     property int visualIndex: 0
+                    property int isFocusing: item.isFocusing
                     width: 635 * appConfig.w_ratio
                     height: 570 * appConfig.h_ratio
                     anchors {
@@ -150,6 +144,7 @@ Item {
                         if (isOpened) openApplication(widsModel.getUrlByType("map"))
                         changeFocus(itemMap)
                         widgetFocusing = index
+                        appFocusing = -1
                     }
                 }
                 onClicked: onWidgetKeyPressed(parent.visualIndex, true)
@@ -165,6 +160,7 @@ Item {
                         if (isOpened) openApplication(widsModel.getUrlByType("climate"))
                         changeFocus(itemClimate)
                         widgetFocusing = index
+                        appFocusing = -1
                     }
                 }
                 onClicked: onWidgetKeyPressed(parent.visualIndex, true)
@@ -180,6 +176,7 @@ Item {
                         if (isOpened) openApplication(widsModel.getUrlByType("media"))
                         changeFocus(itemMedia)
                         widgetFocusing = index
+                        appFocusing = -1
                     }
                 }
                 onClicked: onWidgetKeyPressed(parent.visualIndex, true)
@@ -224,19 +221,22 @@ Item {
                 keys: "AppButton"
 
                 onEntered: {
+                    if (drag.source.isFocusing) appFocusing = icon.visualIndex
                     if (drag.source.visualIndex !== icon.visualIndex) {
+                        if (drag.source.visualIndex > appFocusing && appFocusing >= icon.visualIndex) appFocusing ++
+                        if (drag.source.visualIndex < appFocusing && appFocusing <= icon.visualIndex) appFocusing --
                         appsModel.move(drag.source.visualIndex, icon.visualIndex);
                         visualModel.items.move(drag.source.visualIndex, icon.visualIndex)
                         appsModel.saveApps()
                     }
                 }
-
                 property int visualIndex: DelegateModel.itemsIndex
                 Binding { target: icon; property: "visualIndex"; value: visualIndex }
 
                 Item {
                     id: icon
                     property int visualIndex: 0
+                    property int isFocusing: app.isFocusing
                     width: 316 * appConfig.w_ratio
                     height: 604 * appConfig.h_ratio
                     anchors {
@@ -248,18 +248,22 @@ Item {
                         id: app
                         function onAppKeyPressed(appID, isOpened){
                             if (appID === model.id){
-                                if (isOpened) openApplication(app.url)
+                                if (isOpened) openApplication(model.url)
                                 changeFocus(app)
                                 widgetFocusing = -1
+                                appFocusing = visualIndex
+                                lvApps.positionViewAtIndex(visualIndex, ListView.Visible)
                             }
                         }
                         anchors.fill: parent
                         title: model.title
                         icon: model.iconPath
-                        url: model.url
                         onClicked: onAppKeyPressed(model.id, true)
                         drag.target: icon
-                        Component.onCompleted:root.appKeyPressed.connect(onAppKeyPressed)
+                        Component.onCompleted:{
+                            root.appKeyPressed.connect(onAppKeyPressed)
+                            if (icon.visualIndex === 0) changeFocus(app)
+                        }
                     }
 
                     onFocusChanged: app.focus = icon.focus

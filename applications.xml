@@ -18,16 +18,16 @@
   <ICON_PATH>qrc:/Img/HomeScreen/btn_home_menu_media</ICON_PATH>
  </APP>
  <APP ID="004">
-  <TITLE>Radio</TITLE>
-  <KEY>R</KEY>
-  <URL>qrc:/App/Radio/Radio.qml</URL>
-  <ICON_PATH>qrc:/Img/HomeScreen/btn_home_menu_radio</ICON_PATH>
- </APP>
- <APP ID="005">
   <TITLE>Phone</TITLE>
   <KEY>P</KEY>
   <URL>qrc:/App/Phone/Phone.qml</URL>
   <ICON_PATH>qrc:/Img/HomeScreen/btn_home_menu_phone</ICON_PATH>
+ </APP>
+ <APP ID="005">
+  <TITLE>Radio</TITLE>
+  <KEY>R</KEY>
+  <URL>qrc:/App/Radio/Radio.qml</URL>
+  <ICON_PATH>qrc:/Img/HomeScreen/btn_home_menu_radio</ICON_PATH>
  </APP>
  <APP ID="006">
   <TITLE>Settings</TITLE>
