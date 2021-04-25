@@ -40,6 +40,7 @@ QString ApplicationItem::iconPath() const
 
 QString ApplicationsModel::getIdByKey(Qt::Key keyEvent)
 {
+    //loop all member of m_data to get id of member if member key equal key param
     for (ApplicationItem app : m_data){
         if (QKeySequence(keyEvent).toString().compare(app.key())==0) return app.id();
     }
@@ -94,6 +95,7 @@ QVariant ApplicationsModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
+//add an ApplicationItem to m_data and copy_data list
 void ApplicationsModel::addApplication(ApplicationItem &item)
 {
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
@@ -102,6 +104,7 @@ void ApplicationsModel::addApplication(ApplicationItem &item)
     endInsertRows();
 }
 
+//get an ApplicationItem in copy_data list at position (real position)
 ApplicationItem ApplicationsModel::getApplication(int position)
 {
     return copy_data.at(position);

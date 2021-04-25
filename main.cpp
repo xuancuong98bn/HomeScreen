@@ -33,6 +33,7 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
+    //Add context property for all model that used
     ApplicationsModel appsModel;
     appsModel.loadApps();
     engine.rootContext()->setContextProperty("appsModel", &appsModel);

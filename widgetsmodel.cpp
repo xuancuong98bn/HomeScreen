@@ -26,6 +26,7 @@ QVariant WidgetsModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
+//add a WidgetItem to m_data and copy_data list
 void WidgetsModel::addWidget(WidgetItem &item)
 {
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
@@ -34,6 +35,7 @@ void WidgetsModel::addWidget(WidgetItem &item)
     endInsertRows();
 }
 
+//get a WidgetItem in copy_data list at position (real position)
 WidgetItem WidgetsModel::getWidget(int position)
 {
     return copy_data.at(position);
@@ -46,6 +48,7 @@ void WidgetsModel::loadWidgets()
 
 QString WidgetsModel::getUrlByType(QString type)
 {
+    //loop all member of m_data to get url of member if member type equal type param
     for(WidgetItem item : m_data){
         if (item.type().compare(type) == 0) return item.url();
     }

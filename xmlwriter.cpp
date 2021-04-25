@@ -16,6 +16,7 @@ XmlWriter::XmlWriter(QString fileName, ApplicationsModel &model)
     QDomElement root = m_xmlDoc.createElement("APPLICATIONS");
     m_xmlDoc.appendChild(root);
 
+    //loop to get all member in model to set property and data to xml file
     for (int i = 0; i < model.rowCount(); i++){
         ApplicationItem app = model.getApplication(i);
         QDomElement tagName = m_xmlDoc.createElement("APP");
@@ -64,6 +65,7 @@ XmlWriter::XmlWriter(QString fileName, WidgetsModel &model)
     QDomElement root = m_xmlDoc.createElement("WIDGETS");
     m_xmlDoc.appendChild(root);
 
+    //loop to get all member in model to set property and data to xml file
     for (int i = 0; i < model.rowCount(); i++){
         WidgetItem app = model.getWidget(i);
         QDomElement tagName = m_xmlDoc.createElement("WID");
@@ -87,6 +89,7 @@ XmlWriter::XmlWriter(QString fileName, WidgetsModel &model)
     f.close();
 }
 
+//convert id from int to QString to save into xml file
 QString XmlWriter::convertID(int id)
 {
     id++;
